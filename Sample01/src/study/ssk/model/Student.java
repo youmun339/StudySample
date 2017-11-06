@@ -55,7 +55,7 @@ public class Student {
 				//ダメだった場合
 				this.schoolYear = "unknown";
 			}
-		} else {	//そもそも３文字ない場合
+		} else {	//そもそも３文字でない場合
 			this.schoolYear = "unknown";
 		}
 		
