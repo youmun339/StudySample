@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import study.ssk.model.Student;
+import study.ssk.control.Judge;
 
 public class StudyManagement {
 	public static ArrayList<Student> studentList;		//生徒リスト　（javaではコレクションと言う）
@@ -43,6 +44,10 @@ public class StudyManagement {
             /** 生徒登録 */
             if(buff.equals("1")){
             	Student newStudent = new Student();	//生徒のインスタンス生成
+            	boolean retry = false;
+            	while(!retry) {
+            	Judge jg = new Judge(); // (y/n)判定をするクラスのインスタンス生成
+            							// インスタンスを作る意味がよくわからんけど。。。
             	
             	System.out.println("生徒の登録を行います。");
             	System.out.println("");
@@ -65,15 +70,28 @@ public class StudyManagement {
             	}
             	newStudent.setAge(newage);	//生徒の年齢を設定
             								//実質的にエラー時は0歳の生徒となる。
-
+            	boolean checkinfo = true;	// 生徒の学年の設定の成功失敗を受け取る
+            	// 設定に失敗かつ再設定を行う選択中
+            	while(checkinfo) {
             	System.out.println("*学年は？　入力例：) 1-A、2-B等");
             	System.out.print(">");
             	buff = scan.nextLine();			//入力受け取り
-            	newStudent.setSchoolYear(buff);	//生徒の学年を設定
+            	checkinfo = newStudent.setSchoolYear(buff);	//生徒の学年を設定
+            	
+            	// 再設定ルート
+            	if(!checkinfo) {
+            		System.out.println("学年の設定に失敗しました。再設定しますか？");
+            		//再設定の意思確認
+            		checkinfo = Judge.judge();
+            	}
+            	}
             	// TODO 真偽値を返す設計にしたので、本来は正常な学年の設定ができるまで繰り返すのが好ましい。
             	
             	System.out.println("以下の情報で登録します。\n");
             	newStudent.printStudent();
+            	System.out.println("よろしいですか？");
+            	retry = Judge.judge();
+            	}
             	//　TODO 確認させて、入力のし直しができると好ましい。
             	
             	studentList.add(newStudent);	//リストへ追加
@@ -99,11 +117,11 @@ public class StudyManagement {
             		System.out.println("不正な値です。");
             		System.out.println("入力のやり直しをお願いします。");
             	}
-            	if(num < 0 || num > studentList.size()){
+            	if(num < 1 || num > studentList.size()){
             		System.out.println("入力された番号は存在しません");
             	} else {
                 	System.out.println("入力を確認しました。");
-                	
+
                 	Student changeStudent = studentList.get(num-1);	//取得
                 	
                 	System.out.println("生徒の変更を行います。");
