@@ -46,8 +46,6 @@ public class StudyManagement {
             	Student newStudent = new Student();	//生徒のインスタンス生成
             	boolean retry = false;
             	while(!retry) {
-            	Judge jg = new Judge(); // (y/n)判定をするクラスのインスタンス生成
-            							// インスタンスを作る意味がよくわからんけど。。。
             	
             	System.out.println("生徒の登録を行います。");
             	System.out.println("");
@@ -82,7 +80,11 @@ public class StudyManagement {
             	if(!checkinfo) {
             		System.out.println("学年の設定に失敗しました。再設定しますか？");
             		//再設定の意思確認
-            		checkinfo = Judge.judge();
+            		checkinfo = Judge.judge(scan);
+            	}
+            	else {
+            		// 正常に設定を行った場合は脱出
+            		checkinfo = false;;
             	}
             	}
             	// TODO 真偽値を返す設計にしたので、本来は正常な学年の設定ができるまで繰り返すのが好ましい。
@@ -90,7 +92,7 @@ public class StudyManagement {
             	System.out.println("以下の情報で登録します。\n");
             	newStudent.printStudent();
             	System.out.println("よろしいですか？");
-            	retry = Judge.judge();
+            	retry = Judge.judge(scan);
             	}
             	//　TODO 確認させて、入力のし直しができると好ましい。
             	
